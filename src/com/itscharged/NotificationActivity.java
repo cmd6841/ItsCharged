@@ -37,8 +37,6 @@ public class NotificationActivity extends Activity {
                 }
                 if (audioManager != null) {
                     audioManager.setRingerMode(originalRingerMode);
-                    audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
-                            originalVolume, AudioManager.FLAG_SHOW_UI);
                 }
                 finish();
             }
@@ -61,8 +59,6 @@ public class NotificationActivity extends Activity {
         }
         if (audioManager != null) {
             audioManager.setRingerMode(originalRingerMode);
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
-                    originalVolume, AudioManager.FLAG_SHOW_UI);
         }
     }
 
@@ -73,14 +69,11 @@ public class NotificationActivity extends Activity {
     public void alert() {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         originalRingerMode = audioManager.getRingerMode();
-        if (originalRingerMode != AudioManager.RINGER_MODE_NORMAL) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-            originalVolume = audioManager
-                    .getStreamVolume(AudioManager.STREAM_ALARM);
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
-                    audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
-                    AudioManager.FLAG_SHOW_UI);
-        }
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+        audioManager.setStreamVolume(AudioManager.STREAM_RING,
+                audioManager.getStreamMaxVolume(AudioManager.STREAM_RING),
+                AudioManager.FLAG_SHOW_UI);
         Uri notification = RingtoneManager
                 .getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(this, notification);
