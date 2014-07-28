@@ -36,6 +36,8 @@ public class NotificationActivity extends Activity {
                     Log.d(TAG, "Ringtone stopped.");
                 }
                 if (audioManager != null) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_RING,
+                            originalVolume, AudioManager.FLAG_SHOW_UI);
                     audioManager.setRingerMode(originalRingerMode);
                 }
                 finish();
@@ -58,6 +60,8 @@ public class NotificationActivity extends Activity {
             Log.d(TAG, "Ringtone stopped.");
         }
         if (audioManager != null) {
+            audioManager.setStreamVolume(AudioManager.STREAM_RING,
+                    originalVolume, AudioManager.FLAG_SHOW_UI);
             audioManager.setRingerMode(originalRingerMode);
         }
     }
