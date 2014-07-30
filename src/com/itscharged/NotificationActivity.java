@@ -82,11 +82,35 @@ public class NotificationActivity extends Activity {
                 .getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(this, notification);
         r.play();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (ItsChargedReceiver.isStillCharging) {
+                    Log.d(TAG, "Still charging.");
+                    if (!ItsChargedReceiver.isStillCharging) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                NotificationActivity.this.exit();
+            }
+        }).start();
     }
 
     public void exit() {
-        Toast.makeText(this, "Battery not charging. Application exitted!",
-                Toast.LENGTH_LONG).show();
+        Log.d(TAG, "Exit called.");
+//        Toast.makeText(this, "Exit called", Toast.LENGTH_SHORT).show();
+        if (!ItsChargedReceiver.isStillCharging) {
+            ItsChargedReceiver.isStillCharging = true;
+        }
+//        Toast.makeText(this, "Battery not charging. Application exitted!",
+//                Toast.LENGTH_LONG).show();
         finish();
     }
 }

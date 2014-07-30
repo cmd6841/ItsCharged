@@ -14,6 +14,7 @@ public class ItsChargedReceiver extends BroadcastReceiver {
     Intent notificationIntent;
     Context mContext;
     static LaunchActivity mActivity;
+    static boolean isStillCharging = true;
 
     public ItsChargedReceiver(Context context) {
         mContext = context;
@@ -34,9 +35,9 @@ public class ItsChargedReceiver extends BroadcastReceiver {
                     -1);
             boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
             boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
-            mActivity.text.append("\nCurrent Battery Status:");
+            mActivity.text.setText("\nCurrent Battery Status:");
             if (usbCharge && mActivity != null) {
-                mActivity.text.setText("\nCharging via USB.");
+                mActivity.text.append("\nCharging via USB.");
             } else if (acCharge && mActivity != null) {
                 mActivity.text.append("\nCharging via AC adapter.");
             } else {
@@ -48,12 +49,19 @@ public class ItsChargedReceiver extends BroadcastReceiver {
                         + batteryLevel + "%");
             }
         }
-
-        notificationIntent = new Intent(context, NotificationActivity.class);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (status == BatteryManager.BATTERY_STATUS_FULL) {
-            Log.d(TAG, "It's charging.");
-            context.startActivity(notificationIntent);
+        if (!isCharging) {
+            if (isStillCharging)
+                isStillCharging = false;
+            // Log.d(TAG, "Charger removed.");
+        } else {
+            notificationIntent = new Intent(context, NotificationActivity.class);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (status == BatteryManager.BATTERY_STATUS_FULL
+                    || batteryLevel > 93) {
+                isStillCharging = true;
+                Log.d(TAG, "It's charging.");
+                context.startActivity(notificationIntent);
+            }
         }
     }
 }
