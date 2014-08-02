@@ -17,9 +17,6 @@ public class LaunchActivity extends Activity {
         setContentView(R.layout.activity_launch);
 
         Log.d(TAG, "Launch Activity created.");
-        Toast.makeText(this,
-                "Service is started. You may close this application now!",
-                Toast.LENGTH_LONG).show();
         Intent serviceIntent = new Intent(getBaseContext(),
                 ItsChargedService.class);
         stopService(serviceIntent);
@@ -27,6 +24,10 @@ public class LaunchActivity extends Activity {
 
         text = (TextView) findViewById(R.id.textView1);
         ItsChargedReceiver.mActivity = this;
+
+        Toast.makeText(this,
+                "Service is started. You may close this application now!",
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
