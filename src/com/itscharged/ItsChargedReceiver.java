@@ -47,6 +47,9 @@ public class ItsChargedReceiver extends BroadcastReceiver {
                 if (mActivity != null) {
                     mActivity.text.append("\n- Current battery level: "
                             + batteryLevel + "%");
+                    if (status == BatteryManager.BATTERY_STATUS_FULL) {
+                        mActivity.text.append("\n- Battery fully charged. ");
+                    }
                 }
             } catch (Exception e) {
                 Log.d(TAG,
@@ -60,7 +63,7 @@ public class ItsChargedReceiver extends BroadcastReceiver {
         } else {
             notificationIntent = new Intent(context, NotificationActivity.class);
             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (status == BatteryManager.BATTERY_STATUS_FULL) {
+            if (status == BatteryManager.BATTERY_STATUS_FULL || batteryLevel > 99) {
                 isStillCharging = true;
                 Log.d(TAG, "It's charging.");
                 context.startActivity(notificationIntent);
