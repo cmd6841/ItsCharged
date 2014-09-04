@@ -3,7 +3,7 @@
     android:id="@+id/button"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="STOP CHARGING!"
+    android:text="@string/stop_charging"
     android:textColor="#ff0000"
     android:textSize="54sp" >
 
